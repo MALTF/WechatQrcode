@@ -1,5 +1,7 @@
 # WechatQrcode
 WeChatQrCode transplant to android platform.
+微信二维码识别引擎移植到Android平台
+当前仅支持abiFilters 'armeabi-v7a'
 
 文章地址：https://blog.csdn.net/SportHappy/article/details/116745415
 
