@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">WechatQrcode</string>
+    <string name="start_scan">开始扫码</string>
+    <string name="start_crop">Crop</string>
+    <string name="camera">摄像头(相机)</string>
+</resources>
