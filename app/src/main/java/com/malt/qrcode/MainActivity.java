@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
+import org.opencv.android.JavaCameraView;
 
 /**
  * @author by maliang on 2021/5/12 10:34
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
         findViewById(R.id.bt_main).setOnClickListener(v -> {
             ((TextView) findViewById(R.id.tv_main)).setText("");
+            JavaCameraView.mScale = 2;
             startActivityForResult(new Intent(MainActivity.this, WechatQrPortraitActivity.class), 1);
         });
     }
