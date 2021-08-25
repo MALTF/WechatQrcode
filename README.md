@@ -1,6 +1,8 @@
 # WechatQrcode
 WeChatQrCode transplant to android platform.
 
+更新[opencv 4.5.3](https://github.com/malxt/opencv/tree/main/opencv) 新增一维码识别
+
 微信二维码识别引擎移植到Android平台
 当前仅支持abiFilters 'armeabi-v7a'
 
