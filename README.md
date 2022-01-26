@@ -10,4 +10,4 @@ WeChatQrCode transplant to android platform.
 
 [演示APK文件下载](https://github.com/malxt/WechatQrcode/releases/download/v1.0.2/WechatQrcode_v1.0.2.apk)
 
-[使用WechatQrcode二维码示例APK下载地址](https://github.com/malxt/ObtainSignature/releases/tag/v2.3.26)
+[使用WechatQrcode二维码示例APK下载地址](https://github.com/malxt/ObtainSignature/releases)
