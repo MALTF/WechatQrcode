@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 }
 
+def wechatQrcodeVersionName = "1.0.3"
+def wechatQrcodeVersionCode = ((1 * 100 + 0) * 100 + 0) * 10 + 3
+
 android {
     compileSdk 31
 
@@ -22,8 +25,8 @@ android {
         applicationId "com.malt.wechat_qrcode"
         minSdk 21
         targetSdk 31
-        versionCode 2
-        versionName "1.0.2"
+        versionCode wechatQrcodeVersionCode
+        versionName wechatQrcodeVersionName
         //javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -68,10 +71,20 @@ android {
     // 配置自定义打包名称
     android.applicationVariants.configureEach { variant ->
         if (variant.buildType.name == 'release') {
-            // 更新至Android Studio 3.3.1 gradle 4.10.1
-            variant.outputs.all {
-                variant.packageApplicationProvider.get().outputDirectory = new File(project.rootDir.absolutePath + "/app/" + variant.buildType.name)
-                outputFileName = "WechatQrcode_v1.0.0.apk"
+            // Android Studio Giraffe | 2022.3.1
+            // Build #AI-223.8836.35.2231.10406996, built on June 29, 2023
+            // Runtime version: 17.0.6+0-17.0.6b829.9-10027231 x86_64
+            // VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
+            // Non-Bundled Plugins:
+            //    com.jetbrains.plugins.ini4idea (223.8836.46)
+            //    Statistic (4.2.7)
+            //    GsonFormatPlus (1.6.1)
+            //    com.alibaba.p3c.smartfox (2.1.1)
+            //    com.nasller.CodeGlancePro (1.6.0)
+            //    idea.plugin.protoeditor (223.8214.6)
+            variant.outputs.configureEach {
+                variant.packageApplicationProvider.get().outputDirectory = new File(project.rootDir.absolutePath + "/" + variant.buildType.name)
+                outputFileName = "WechatQrcode_v${wechatQrcodeVersionName}.apk"
             }
         }
     }
@@ -92,5 +105,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     // 微信二维码 识别
-    implementation project(path: ':opencv4.8.0')
+    //implementation project(path: ':opencv4.8.0')
+    implementation project(path: ':opencv4.9.0_lite')
+}
+
+tasks.configureEach { task ->
+    if (task.name.contains("ReleaseApkListingFileRedirect")) {
+        task.enabled = false
+    }
 }

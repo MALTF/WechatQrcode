@@ -6,12 +6,10 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraActivity;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -51,18 +49,18 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
     protected BarcodeDetector barcodeDetector = null;
 
     private TextView resultTextView;
-
-    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            if (status == LoaderCallbackInterface.SUCCESS) {
-                Log.i(TAG, "OpenCV loaded successfully");
-                mOpenCvCameraView.enableView();
-            } else {
-                super.onManagerConnected(status);
-            }
-        }
-    };
+    // OpenCV4.8.0 启用
+//    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+//        @Override
+//        public void onManagerConnected(int status) {
+//            if (status == LoaderCallbackInterface.SUCCESS) {
+//                Log.i(TAG, "OpenCV loaded successfully");
+//                mOpenCvCameraView.enableView();
+//            } else {
+//                super.onManagerConnected(status);
+//            }
+//        }
+//    };
 
     public WechatQrPortraitActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
@@ -84,6 +82,8 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
         mOpenCvCameraView = findViewById(R.id.tutorial1_activity_java_surface_view);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
+        // OpenCV4.9.0 启用
+        mOpenCvCameraView.enableView();
     }
 
     @Override
@@ -97,13 +97,16 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
     @Override
     public void onResume() {
         super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback);
-        } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
+        // OpenCV4.8.0 启用
+//        if (!OpenCVLoader.initDebug()) {
+//            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+//            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback);
+//        } else {
+//            Log.d(TAG, "OpenCV library found inside package. Using it!");
+//            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+//        }
+        OpenCVLoader.initLocal();
+
         weChatQRCode = WechatQr.init(this);
         barcodeDetector = new BarcodeDetector();
     }
@@ -161,20 +164,8 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
         Imgproc.warpAffine(rgba, dstRgb, m, size);
         // 旋转灰度图
         Imgproc.warpAffine(grayMat, dstGray, m, size);
-        // 灰度图帧率更高
-        List<String> results = weChatQRCode.detectAndDecode(dstRgb, points);
+        // 灰度图帧率更高 // 原彩帧率低一些
         StringBuilder sb = new StringBuilder();
-        // 原彩帧率低一些
-        if (null != results && results.size() > 0) {
-            Log.e(TAG, "识别的结果数量：" + results.size());
-            for (int i = 0, isize = results.size(); i < isize; i++) {
-                String qrCode = results.get(i);
-                sb.append("qrCode[").append(i).append("]").append(qrCode).append("\r\n");
-                Rect rect = Imgproc.boundingRect(points.get(i));
-                Imgproc.rectangle(dstRgb, rect, scalar, 5);
-                Imgproc.putText(dstRgb, qrCode, rect.tl(), 0, 1, scalar);
-            }
-        }
         Mat pointsMat = new Mat();
         List<String> decoded_info = new ArrayList<>();
         List<Mat> straight_code = new ArrayList<>();
@@ -196,6 +187,17 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
                         Imgproc.putText(dstRgb, barCode, rect.tl(), 0, 1, scalar);
                     }
                 }
+            }
+        }
+        List<String> results = weChatQRCode.detectAndDecode(dstRgb, points);
+        if (null != results && results.size() > 0) {
+            Log.e(TAG, "识别的结果数量：" + results.size());
+            for (int i = 0, isize = results.size(); i < isize; i++) {
+                String qrCode = results.get(i);
+                sb.append("qrCode[").append(i).append("]").append(qrCode).append("\r\n");
+                Rect rect = Imgproc.boundingRect(points.get(i));
+                Imgproc.rectangle(dstRgb, rect, scalar, 5);
+                Imgproc.putText(dstRgb, qrCode, rect.tl(), 0, 1, scalar);
             }
         }
         resultTextView.post(new Runnable() {
