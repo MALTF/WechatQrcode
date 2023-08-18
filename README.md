@@ -1,8 +1,8 @@
 # WechatQrcode
 WeChatQrCode transplant to android platform.
 
-<p align="center">
-  <img src="https://github.com/malxt/ObtainSignature/blob/master/WechatQrcode_mini.gif" width="200px">
+<p align="left">
+  <img src="https://github.com/malxt/ObtainSignature/blob/master/WechatQrcode_mini.gif" width="40%">
 </p>
 
 更新[opencv 4.5.3](https://github.com/malxt/opencv/tree/main/opencv) 新增一维码识别
