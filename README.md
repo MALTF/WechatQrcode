@@ -1,6 +1,10 @@
 # WechatQrcode
 WeChatQrCode transplant to android platform.
 
+<p align="left">
+  <img src="https://github.com/malxt/ObtainSignature/blob/master/WechatQrcode_mini.gif" widdth=50%>
+</p>
+
 更新[opencv 4.5.3](https://github.com/malxt/opencv/tree/main/opencv) 新增一维码识别
 
 微信二维码识别引擎移植到Android平台
