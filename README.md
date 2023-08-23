@@ -1,13 +1,9 @@
 # WechatQrcode
 WeChatQrCode transplant to android platform.
 
-<p align="left">
-  <img src="/Screenshot/Screenshot_20230823_150115_com.malt.wechat_qrcode.jpg" width="45%">
-</p>
-<p align="right">
-  <img src="/Screenshot/Screenshot_20230823_154024_com.malt.wechat_qrcode.jpg" width="45%">
-</p>
-
+<center class="half">
+  <img src="/Screenshot/Screenshot_20230823_150115_com.malt.wechat_qrcode.jpg" width="45%"><img src="/Screenshot/Screenshot_20230823_154024_com.malt.wechat_qrcode.jpg" width="45%">
+</center>
 <p align="left">
   <img src="https://github.com/malxt/ObtainSignature/blob/master/WechatQrcode_mini.gif" width="40%">
 </p>
