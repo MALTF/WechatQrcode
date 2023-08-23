@@ -1,29 +1,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:opencv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
     <org.opencv.android.JavaCameraView
         android:id="@+id/tutorial1_activity_java_surface_view"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
         opencv:camera_id="any"
         opencv:show_fps="true" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
 
-        <CheckBox
-            android:id="@+id/checkboxCrop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_crop"
-            android:textColor="@color/colorPrimary" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/result_code_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginBottom="72dp"
+        android:includeFontPadding="false"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 </RelativeLayout>

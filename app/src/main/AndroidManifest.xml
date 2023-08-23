@@ -22,12 +22,14 @@
 
     <application
         android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WechatQrcode">
+        android:theme="@style/Theme.WechatQrcode"
+        tools:ignore="DataExtractionRules,UnusedAttribute">
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -39,7 +41,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name="com.malt.qrcode.MainActivity">
+        <activity
+            android:name="com.malt.qrcode.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,9 +53,7 @@
         <activity
             android:name="com.malt.qrcode.WechatQrPortraitActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
     </application>
-
 </manifest>

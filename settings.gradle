@@ -1,4 +1,4 @@
 // projectName
 rootProject.name = "WechatQrcode"
 // integration
-include ':app', ':opencv452'
+include ':app', ':opencv4.8.0'

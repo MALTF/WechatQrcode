@@ -2,10 +2,9 @@ package com.malt.qrcode;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.WindowManager;
-import android.widget.CheckBox;
+import android.widget.TextView;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraActivity;
@@ -14,12 +13,14 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.BarcodeDetector;
 import org.opencv.wechat_qrcode.WeChatQRCode;
 
 import java.util.ArrayList;
@@ -36,13 +37,10 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
     private static final String TAG = WechatQrPortraitActivity.class.getSimpleName();
 
     private CameraBridgeViewBase mOpenCvCameraView;
-    private boolean mIsJavaCamera = true;
-    private MenuItem mItemSwitchCamera = null;
-    private CheckBox checkBoxCrop;
 
-    private List<Mat> points = new ArrayList<>();
-    private Scalar scalar = new Scalar(255, 255, 0, 0);
-    private Point center = new Point();
+    private final List<Mat> points = new ArrayList<>();
+    private final Scalar scalar = new Scalar(255, 255, 0, 0);
+    private final Point center = new Point();
 
     private Mat dstRgb = null;
     private Mat dstGray = null;
@@ -50,8 +48,11 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
     private Size size = null;
 
     protected WeChatQRCode weChatQRCode = null;
+    protected BarcodeDetector barcodeDetector = null;
 
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+    private TextView resultTextView;
+
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             if (status == LoaderCallbackInterface.SUCCESS) {
@@ -77,9 +78,10 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.wechat_qr_portrait);
-        checkBoxCrop = findViewById(R.id.checkboxCrop);
 
-        mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.tutorial1_activity_java_surface_view);
+        resultTextView = findViewById(R.id.result_code_tv);
+
+        mOpenCvCameraView = findViewById(R.id.tutorial1_activity_java_surface_view);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
@@ -97,12 +99,13 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
         super.onResume();
         if (!OpenCVLoader.initDebug()) {
             Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback);
         } else {
             Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
         weChatQRCode = WechatQr.init(this);
+        barcodeDetector = new BarcodeDetector();
     }
 
     @Override
@@ -158,81 +161,50 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
         Imgproc.warpAffine(rgba, dstRgb, m, size);
         // 旋转灰度图
         Imgproc.warpAffine(grayMat, dstGray, m, size);
-        if (checkBoxCrop.isChecked()) {
-            int finalWidth = 200;
-            // 这个值不要设置得太大，否则出边界了
-            int squreWidth = Math.min(finalWidth, dstRgb.width());
-            Mat centerMat = centerRectDraw2Cop(dstRgb, squreWidth);
-            // 灰度图帧率更高
-            List<String> results = weChatQRCode.detectAndDecode(centerMat, points);
-            centerRectDraw(dstRgb, squreWidth);
-            centerMat.release();
-            // 原彩帧率低一些
-            if (null != results && results.size() > 0) {
-                //裁剪后位置要加上偏移
-                int delTaX = (dstRgb.width() - squreWidth) / 2;
-                int delTaY = (dstRgb.height() - squreWidth) / 2;
-                Log.e(TAG, "识别的结果数量：" + results.size());
-                for (int i = 0, isize = results.size(); i < isize; i++) {
-                    Rect rect = Imgproc.boundingRect(points.get(i));
-                    rect.x = rect.x + delTaX;
-                    rect.y = rect.y + delTaY;
-                    Imgproc.rectangle(dstRgb, rect, scalar, 5);
-                    Imgproc.putText(dstRgb, results.get(i), rect.tl(), 0, 1, scalar);
-                }
+        // 灰度图帧率更高
+        List<String> results = weChatQRCode.detectAndDecode(dstRgb, points);
+        StringBuilder sb = new StringBuilder();
+        // 原彩帧率低一些
+        if (null != results && results.size() > 0) {
+            Log.e(TAG, "识别的结果数量：" + results.size());
+            for (int i = 0, isize = results.size(); i < isize; i++) {
+                String qrCode = results.get(i);
+                sb.append("qrCode[").append(i).append("]").append(qrCode).append("\r\n");
+                Rect rect = Imgproc.boundingRect(points.get(i));
+                Imgproc.rectangle(dstRgb, rect, scalar, 5);
+                Imgproc.putText(dstRgb, qrCode, rect.tl(), 0, 1, scalar);
             }
-        } else {
-            // 灰度图帧率更高
-            List<String> results = weChatQRCode.detectAndDecode(dstRgb, points);
-            // 原彩帧率低一些
-            if (null != results && results.size() > 0) {
-                Log.e(TAG, "识别的结果数量：" + results.size());
-                for (int i = 0, isize = results.size(); i < isize; i++) {
-                    Rect rect = Imgproc.boundingRect(points.get(i));
-                    Imgproc.rectangle(dstRgb, rect, scalar, 5);
-                    Imgproc.putText(dstRgb, results.get(i), rect.tl(), 0, 1, scalar);
-                }
-            }
-
         }
+        Mat pointsMat = new Mat();
+        List<String> decoded_info = new ArrayList<>();
+        List<Mat> straight_code = new ArrayList<>();
+        boolean decodeMulti = barcodeDetector.detectAndDecodeMulti(dstRgb, decoded_info, pointsMat, straight_code);
+        if (decodeMulti && decoded_info.size() > 0) {
+            for (int index = 0; index < decoded_info.size(); index++) {
+                String barCode = decoded_info.get(index);
+                sb.append("barCode[").append(index).append("]").append(barCode).append("\r\n");
+                if (straight_code.size() > index) {
+                    pointsMat = straight_code.get(index);
+                }
+                if (pointsMat != null) {
+                    int depth = pointsMat.depth();
+                    int npoints = pointsMat.checkVector(2);
+                    Log.d(TAG, "depth:" + depth + " npoints:" + npoints);
+                    if (npoints >= 0 && (depth == CvType.CV_32F || depth == CvType.CV_32S)) {
+                        Rect rect = Imgproc.boundingRect(pointsMat);
+                        Imgproc.rectangle(dstRgb, rect, scalar, 5);
+                        Imgproc.putText(dstRgb, barCode, rect.tl(), 0, 1, scalar);
+                    }
+                }
+            }
+        }
+        resultTextView.post(new Runnable() {
+            @Override
+            public void run() {
+                resultTextView.setText(sb.toString());
+            }
+        });
         // 返回原彩图旋转后的图
         return dstRgb;
-    }
-
-    /**
-     * 指定正常形大小
-     *
-     * @param mat Mat
-     * @param min min
-     */
-    protected void centerRectDraw(Mat mat, int min) {
-        Scalar scalar = new Scalar(0xff, 0x88, 0x88, 0x88);
-        int width = mat.width();
-        int height = mat.height();
-
-        Rect rect = new Rect();
-        rect.x = width / 2 - min / 2;
-        rect.y = height / 2 - min / 2;
-        rect.width = min;
-        rect.height = min;
-        Imgproc.rectangle(mat, rect, scalar);
-    }
-
-    /**
-     * 指定正常形大小
-     *
-     * @param mat Mat
-     * @param min min
-     */
-    public static Mat centerRectDraw2Cop(Mat mat, int min) {
-        int width = mat.width();
-        int height = mat.height();
-
-        Rect rect = new Rect();
-        rect.x = width / 2 - min / 2;
-        rect.y = height / 2 - min / 2;
-        rect.width = min;
-        rect.height = min;
-        return new Mat(mat, rect);
     }
 }
