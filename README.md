@@ -1,10 +1,6 @@
 # WechatQrcode <a href=""><img src="https://img.shields.io/badge/Build-pass-brightgreen"/></a> [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MALTF/APK-Parser/blob/main/LICENSE)
-WeChatQrCode transplant to android platform.
-仅编译版本 'arm64-v8a' 其他请参考[OpenCV-WeChatQRCode移植到Android平台](https://blog.csdn.net/SportHappy/article/details/116745415)自行编译
 
-微信二维码识别引擎移植到Android平台
-
-[OpenCV-WeChatQRCode移植到Android平台](https://blog.csdn.net/SportHappy/article/details/116745415)
+仅编译版本 'arm64-v8a' 其他平台请参考微信二维码识别引擎移植到Android平台[OpenCV-WeChatQRCode移植到Android平台](https://blog.csdn.net/SportHappy/article/details/116745415)自行编译
 
 <p align="left">
   <img src="/Screenshot/Screenshot_20230823_150115_com.malt.wechat_qrcode.jpg" width="45%"><img src="/Screenshot/Screenshot_20230823_154024_com.malt.wechat_qrcode.jpg" width="45%">
