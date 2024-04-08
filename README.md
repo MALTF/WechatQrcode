@@ -1,17 +1,35 @@
 # WechatQrcode <a href=""><img src="https://img.shields.io/badge/Build-pass-brightgreen"/></a> [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MALTF/APK-Parser/blob/main/LICENSE)
-WeChatQrCode transplant to android platform.
 
-微信二维码识别引擎移植到Android平台
-
-[OpenCV-WeChatQRCode移植到Android平台](https://blog.csdn.net/SportHappy/article/details/116745415)
+仅编译版本 'arm64-v8a' 其他平台请参考微信二维码识别引擎移植到Android平台[OpenCV-WeChatQRCode移植到Android平台](https://blog.csdn.net/SportHappy/article/details/116745415)自行编译
 
 <p align="left">
   <img src="/Screenshot/Screenshot_20230823_150115_com.malt.wechat_qrcode.jpg" width="45%"><img src="/Screenshot/Screenshot_20230823_154024_com.malt.wechat_qrcode.jpg" width="45%">
 </p>
 
+[OpenCV 4.9.0_lite](https://github.com/MALTF/WechatQrcode/tree/master/opencv4.9.0_lite)[OpenCV4.9.0 版本变化](https://github.com/opencv/opencv/wiki/ChangeLog#version490)
+
+* Android:
+    * New Android Archive Package (AAR) distrubuted with Maven Central
+    * Finally removed API for OpenCV manager. OpenCVLoader.initLocal() should be used to initialize OpenCV.
+    * New Android samples: QR code detector, video IO sample. DNN and Face Detector samples refresh.
+    * Switch to Gradle 7.6.3, modern Android tools.
+
+Quick Start
++ opencv4.8.0
+    + ~~OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback);~~
+
++ opencv4.9.0_lite
+```java
+OpenCVLoader.initLocal();
+```
+
 [OpenCV 4.8.0](https://github.com/MALTF/WechatQrcode/tree/master/opencv4.8.0)
 
-此版本仅支持abiFilters 'arm64-v8a'
+Quick Start
++ opencv4.8.0
+```java
+OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback);
+```
 
 [APK下载](https://github.com/MALTF/WechatQrcode/releases)
 

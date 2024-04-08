@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
-def wechatQrcodeVersionName = "1.0.3"
-def wechatQrcodeVersionCode = ((1 * 100 + 0) * 100 + 0) * 10 + 3
+def wechatQrcodeVersionName = "1.0.5"
+def wechatQrcodeVersionCode = ((1 * 100 + 0) * 100 + 0) * 10 + 5
 
 android {
     compileSdk 31
