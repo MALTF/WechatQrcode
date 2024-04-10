@@ -6,7 +6,9 @@
   <img src="/Screenshot/Screenshot_20230823_150115_com.malt.wechat_qrcode.jpg" width="45%"><img src="/Screenshot/Screenshot_20230823_154024_com.malt.wechat_qrcode.jpg" width="45%">
 </p>
 
-[OpenCV 4.9.0_lite](https://github.com/MALTF/WechatQrcode/tree/master/opencv4.9.0_lite)[OpenCV4.9.0 版本变化](https://github.com/opencv/opencv/wiki/ChangeLog#version490)
+* [OpenCV 4.9.0_lite](https://github.com/MALTF/WechatQrcode/tree/master/opencv4.9.0_lite)
+
+* [OpenCV4.9.0 版本变化](https://github.com/opencv/opencv/wiki/ChangeLog#version490)
 
 * Android:
     * New Android Archive Package (AAR) distrubuted with Maven Central
