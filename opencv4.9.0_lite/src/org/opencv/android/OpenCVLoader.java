@@ -1,5 +1,7 @@
 package org.opencv.android;
 
+import android.content.Context;
+
 /**
  * Helper class provides common initialization methods for OpenCV library.
  */
@@ -8,7 +10,7 @@ public class OpenCVLoader
     /**
      * Current OpenCV Library version
      */
-    public static final String OPENCV_VERSION = "4.9.0-lite";
+    public static final String OPENCV_VERSION = "4.9.0";
 
 
     /**
