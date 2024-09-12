@@ -10,7 +10,9 @@ import org.opencv.android.CameraActivity;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
+import org.opencv.android.JavaCameraView;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -19,6 +21,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.BarcodeDetector;
+import org.opencv.utils.Converters;
 import org.opencv.wechat_qrcode.WeChatQRCode;
 
 import java.util.ArrayList;
@@ -150,7 +153,8 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
         center.y = rgba.rows() >> 1;
 
         if (null == dstRgb) {
-            m = Imgproc.getRotationMatrix2D(center, 270, 1);
+            // 4.10.0版本之前 angle=270
+            m = Imgproc.getRotationMatrix2D(center, 0, 1);
             // 如果只处理彩图，就只需要创建和处理dstRgb，如果只需要处理灰度图，就只需要创建和处理dstGray
             // 接受旋转后的彩色图
             dstRgb = new Mat(rgba.cols(), rgba.rows(), rgba.type());
@@ -170,7 +174,7 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
         List<String> decoded_info = new ArrayList<>();
         List<Mat> straight_code = new ArrayList<>();
         boolean decodeMulti = barcodeDetector.detectAndDecodeMulti(dstRgb, decoded_info, pointsMat, straight_code);
-        if (decodeMulti && decoded_info.size() > 0) {
+        if (decodeMulti && !decoded_info.isEmpty()) {
             for (int index = 0; index < decoded_info.size(); index++) {
                 String barCode = decoded_info.get(index);
                 sb.append("barCode[").append(index).append("]").append(barCode).append("\r\n");
@@ -190,7 +194,7 @@ public class WechatQrPortraitActivity extends CameraActivity implements CvCamera
             }
         }
         List<String> results = weChatQRCode.detectAndDecode(dstRgb, points);
-        if (null != results && results.size() > 0) {
+        if (null != results && !results.isEmpty()) {
             Log.e(TAG, "识别的结果数量：" + results.size());
             for (int i = 0, isize = results.size(); i < isize; i++) {
                 String qrCode = results.get(i);

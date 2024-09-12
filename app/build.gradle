@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
-def wechatQrcodeVersionName = "1.0.5"
-def wechatQrcodeVersionCode = ((1 * 100 + 0) * 100 + 0) * 10 + 5
+def wechatQrcodeVersionName = "1.0.6"
+def wechatQrcodeVersionCode = ((1 * 100 + 0) * 100 + 0) * 10 + 6
 
 android {
     compileSdk 31
@@ -106,7 +106,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     // 微信二维码 识别
     //implementation project(path: ':opencv4.8.0')
-    implementation project(path: ':opencv4.9.0_lite')
+    //implementation project(path: ':opencv4.9.0_lite')
+    implementation project(path: ':opencv4.10.0_lite')
 }
 
 tasks.configureEach { task ->

@@ -3,16 +3,16 @@ plugins {
     id 'kotlin-android'
 }
 
-def openCVersionName = "4.9.0"
-def openCVersionCode = ((4 * 100 + 9) * 100 + 0) * 10 + 0
+def openCVersionName = "4.10.0"
+def openCVersionCode = ((4 * 100 + 10) * 100 + 0) * 10 + 0
 
 android {
     namespace 'org.opencv'
-    compileSdk 31
+    compileSdkVersion 31
 
     defaultConfig {
-        minSdk 21
-        targetSdk 31
+        minSdkVersion 21
+        targetSdkVersion 31
 
         versionCode openCVersionCode
         versionName openCVersionName
@@ -44,7 +44,6 @@ android {
         main {
             jniLibs.srcDirs = ['jni']
             java.srcDirs = ['src']  // TODO Use original files instead of copied into build directory
-            aidl.srcDirs = ['src']
             res.srcDirs = ['res']
             manifest.srcFile 'AndroidManifest.xml'
         }
