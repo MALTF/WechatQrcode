@@ -1,10 +1,23 @@
 # WechatQrcode <a href=""><img src="https://img.shields.io/badge/Build-pass-brightgreen"/></a> [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MALTF/APK-Parser/blob/main/LICENSE)
 
-仅编译版本 'arm64-v8a' 其他平台请参考微信二维码识别引擎移植到Android平台[OpenCV-WeChatQRCode移植到Android平台](https://blog.csdn.net/SportHappy/article/details/116745415)自行编译
+已编译版本 'arm64-v8a' 'armeabi-v7a'
+其他平台请参考微信二维码识别引擎移植到Android平台[OpenCV-WeChatQRCode移植到Android平台](https://blog.csdn.net/SportHappy/article/details/116745415)自行编译
 
 <p align="left">
   <img src="/Screenshot/Screenshot_20230823_150115_com.malt.wechat_qrcode.jpg" width="45%"><img src="/Screenshot/Screenshot_20230823_154024_com.malt.wechat_qrcode.jpg" width="45%">
 </p>
+
+* OpenCV Change Logs
+    * [version:4.10.0](https://github.com/opencv/opencv/wiki/ChangeLog#version4100)
+    * [OpenCV 4.10.0_lite](https://github.com/MALTF/WechatQrcode/tree/master/opencv4.10.0_lite)
+ 
+* Android:
+    * Added any screen orientation support for JavaCameraView #24827, JavaCamera2View and NativeCameraView #24869 in Android samples. Fixed double preview initialization bug in JavaCamera2View #24869.
+    * Removed Android AIDL from build scrips and tutorials as it's not needed since 4.9.0 #24843
+    * Enable file system on Emscripten #24949
+    * Updated Android samples for modern Android studio. Added OpenCV from Maven support. #24473
+    * Added Kotlin classes to AAR #24884
+    * Added ARM KleidiCV as HAL for ARM v8 and v9 processors (-DWITH_KLEIDICV=ON CMake option) #25443, #25618, ARM announcement.
 
 * [OpenCV 4.9.0_lite](https://github.com/MALTF/WechatQrcode/tree/master/opencv4.9.0_lite)
 
